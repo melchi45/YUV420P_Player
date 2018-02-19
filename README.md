@@ -68,19 +68,29 @@ Check packages list with
 On Windows you need to include the gl.h header for OpenGL 1.1 support and link against OpenGL32.lib. Both are a part of the [Windows SDK](http://msdn.microsoft.com/en-us/windows/bb980924.aspx). In addition, you might want the following headers which you can get from [http://www.opengl.org/registry](http://www.opengl.org/registry) .
 
 [<GL/glext.h>](https://www.opengl.org/registry/api/GL/glext.h) - OpenGL 1.2 and above compatibility profile and extension interfaces..
+
 [<GL/glcorearb.h>](https://www.opengl.org/registry/api/GL/glcorearb.h) - OpenGL core profile and ARB extension interfaces, as described in appendix G.2 of the OpenGL 4.3 Specification. Does not include interfaces found only in the compatibility profile.
+
 [<GL/glxext.h>](https://www.opengl.org/registry/api/GL/glxext.h) - GLX 1.3 and above API and GLX extension interfaces.
+
 [<GL/wglext.h>](https://www.opengl.org/registry/api/GL/wglext.h) - WGL extension interfaces.
 ### Linux
 On Linux you need to link against libGL.so, which is usually a symlink to libGL.so.1, which is yet a symlink to the actual library/driver which is a part of your graphics driver. For example, on my system the actual driver library is named libGL.so.256.53, which is the version number of the nvidia driver I use. You also need to include the gl.h header, which is usually a part of a Mesa or Xorg package. Again, you might need glext.h and glxext.h from http://www.opengl.org/registry . glxext.h holds GLX extensions, the equivalent to wglext.h on Windows.
+
 If you want to use OpenGL 3.x or OpenGL 4.x functionality without the functionality which were moved into the GL_ARB_compatibility extension, use the new gl3.h header from the registry webpage. It replaces gl.h and also glext.h (as long as you only need core functionality).
+
 Last but not the least, glaux.h is not a header associated with OpenGL. I assume you've read the awful NEHE tutorials and just went along with it. Glaux is a horribly outdated Win32 library (1996) for loading uncompressed bitmaps. Use something better, like libPNG, which also supports alpha channels.
 
+## Build
 
+```
 mkdir build
 cd build
 
 cmake .. -G "Visual Studio 15 2017" -DVCPKG_TARGET_TRIPLET=x86-windows -DCMAKE_TOOLCHAIN_FILE="D:/workspace/YUV420P_Player/vcpkg/scripts/buildsystems/vcpkg.cmake"
-
+```
+### Build without IDE Tools
+```
 cmake .. -Bstatic -G "Visual Studio 15 2017" -DVCPKG_TARGET_TRIPLET=x86-windows -DCMAKE_TOOLCHAIN_FILE="D:/workspace/YUV420P_Player/vcpkg/scripts/buildsystems/vcpkg.cmake"
 cmake --build static --config Release
+```
